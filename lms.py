@@ -94,5 +94,3 @@ def mark_attendance(subject):
         return "OK"
     else:
         return "NOT"
-
-mark_attendance("MC")
