@@ -1,0 +1,30 @@
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+  
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+
+</head>
+<body>
+<table id="table_id" class="display">
+    <thead>
+        <tr>
+            <th>Result</th>
+            <th>Timestamp</th>
+            <th>ID</th>
+            <th>Subject</th>
+            <th>Message</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{ tbody|safe}}
+    </tbody>
+</table>
+<script>
+$(document).ready( function () {
+    $('#table_id').DataTable();
+} );
+</script>
+</body>
+</html>

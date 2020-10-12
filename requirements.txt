@@ -1,0 +1,4 @@
+beautifulsoup4
+flask
+Flask-HTTPAuth
+gunicorn
