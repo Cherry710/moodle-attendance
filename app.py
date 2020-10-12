@@ -16,6 +16,10 @@ def get_pw(username):
         return users.get(username)
     return None
 
+@app.route('/')
+def home():
+    return "You don't belong here, Kindly leave.!"
+
 @app.route('/subject/<subject>')
 def mark(subject):
     return mark_attendance(subject)
@@ -23,7 +27,6 @@ def mark(subject):
 @app.route('/view')
 @auth.login_required
 def view():
-    time.sleep(50)
     with open("log.csv", "r") as logfile:
         CSV_SEPERATOR = ","
         tbody=""
