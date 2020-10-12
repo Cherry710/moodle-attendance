@@ -1,7 +1,6 @@
 beautifulsoup4
 requests
 datetime
-csv
 flask
 Flask-HTTPAuth
 gunicorn
