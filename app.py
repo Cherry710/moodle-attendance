@@ -1,7 +1,6 @@
 from flask import Flask, render_template
 from flask_httpauth import HTTPDigestAuth
 from lms import mark_attendance
-import time
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'parleg'
 auth = HTTPDigestAuth()
