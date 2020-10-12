@@ -15,6 +15,8 @@ subject_links = {
 users = {
     "b151537"   :   "Rgukt@123",
     "b151228"   :   "Rgukt*123",
+    "b151225"   :   "GPfeoI@6",
+    "b151069"   :   "Jaga@123"
 }
 
 LOGIN_PAGE = "http://lms.rgukt.ac.in/login/index.php"
