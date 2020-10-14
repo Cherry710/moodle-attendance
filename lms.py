@@ -47,12 +47,14 @@ def mark_attendance(subject):
                 continue
 
             att_link = x[0]['href']
-            att_link = att_link.split("?")[1]
-            att_dict = {x[0] : x[1] for x in [x.split("=") for x in att_link.split("&") ]}
+            
 
             form_site = s.get(att_link)
             form_bs = bs(form_site.content,"html.parser")
             spans = form_bs.select(".statusdesc")
+            
+            att_link = att_link.split("?")[1]
+            att_dict = {x[0] : x[1] for x in [x.split("=") for x in att_link.split("&") ]}
 
             got_present = False
             button_val=0
