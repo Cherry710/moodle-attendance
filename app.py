@@ -69,9 +69,9 @@ def view(full=False):
                                     database='RtYeNviJ13')
         cursor = cnx.cursor()
         if(full):
-            query = ("SELECT * FROM lmslog")
+            query = ("SELECT * FROM lmslog ORDER BY timestamp DESC")
         else:
-            query = ("SELECT * FROM lmslog LIMIT 50")
+            query = ("SELECT * FROM lmslog ORDER BY timestamp DESC LIMIT 50")
 
         cursor.execute(query)
         tbody=""
