@@ -50,7 +50,6 @@ def home():
     return "You don't belong here, Kindly leave.!"
 
 @app.route('/subject/<subject>')
-@auth.login_required
 def mark(subject):
     task = mark_async.delay(subject)
     return task.get()
@@ -58,12 +57,6 @@ def mark(subject):
 @celery.task(name="process_mark_attendance")
 def mark_async(subject):
     return mark_attendance(subject)
-
-@app.route('/auth_test/')
-@auth.login_required
-def auth_test():
-    return "Authentication Test"
-
 
 @app.route('/view/')
 @app.route('/view/<full>')
