@@ -2,7 +2,36 @@ from flask import Flask, render_template
 from flask_httpauth import HTTPDigestAuth
 from lms import mark_attendance
 import mysql.connector
+from celery import Celery
+import os
+
+import time
+
+def make_celery(app):
+    celery = Celery(
+        app.import_name,
+        backend=app.config['CELERY_RESULT_BACKEND'],
+        broker=app.config['CELERY_BROKER_URL'],
+    )
+    celery.conf.update(app.config)
+
+    class ContextTask(celery.Task):
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return self.run(*args, **kwargs)
+
+    celery.Task = ContextTask
+    return celery
+
+
+
 app = Flask(__name__)
+app.config.update(
+    CELERY_BROKER_URL=os.environ['REDIS_URL'],
+    CELERY_RESULT_BACKEND=os.environ['REDIS_URL']
+)
+celery = make_celery(app)
+
 app.config['SECRET_KEY'] = 'parleg'
 auth = HTTPDigestAuth()
 
@@ -22,6 +51,11 @@ def home():
 
 @app.route('/subject/<subject>')
 def mark(subject):
+    task = mark_async.delay(subject)
+    return task.get()
+
+@celery.task(name="process_mark_attendance")
+def mark_async(subject):
     return mark_attendance(subject)
 
 @app.route('/view/')
