@@ -4,3 +4,4 @@ datetime
 flask
 Flask-HTTPAuth
 gunicorn
+mysql-connector-python
