@@ -50,6 +50,7 @@ def home():
     return "You don't belong here, Kindly leave.!"
 
 @app.route('/subject/<subject>')
+@auth.login_required
 def mark(subject):
     task = mark_async.delay(subject)
     return task.get()
