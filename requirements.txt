@@ -6,3 +6,4 @@ Flask-HTTPAuth
 gunicorn
 mysql-connector-python
 celery
+redis
