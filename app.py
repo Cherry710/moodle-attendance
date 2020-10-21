@@ -59,6 +59,12 @@ def mark(subject):
 def mark_async(subject):
     return mark_attendance(subject)
 
+@app.route('/auth_test/')
+@auth.login_required
+def auth_test():
+    return "Authentication Test"
+
+
 @app.route('/view/')
 @app.route('/view/<full>')
 @auth.login_required
