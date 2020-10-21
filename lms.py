@@ -1,8 +1,7 @@
 from requests import Session
 from bs4 import BeautifulSoup as bs
-import datetime 
-import mysql.connector
-from mysql.connector import errorcode
+import datetime
+import connection
 
 subject_links = {
     "MC"    :   "http://lms.rgukt.ac.in/mod/attendance/view.php?id=741",
@@ -12,14 +11,6 @@ subject_links = {
     "MEFA"  :   "http://lms.rgukt.ac.in/mod/attendance/view.php?id=2307",
 }
 
-users = {
-    "b151537"   :   "Rgukt@123",
-    "b151228"   :   "Rgukt*123",
-    "b151225"   :   "GPfeoI@6",
-    "b151069"   :   "Jaga@123",
-    "b151741"   :   "Zakeer.rgukt@1",
-}
-
 LOGIN_PAGE = "http://lms.rgukt.ac.in/login/index.php"
 
 
@@ -27,7 +18,7 @@ def mark_attendance(subject):
     logging = []
     IS_SUCCESS = False
     COUNT = 0
-    for username,password in users.items():
+    for _,username,password in connection.get_users():
         with Session() as s:
 
             login_page_content = bs(s.get(LOGIN_PAGE).content, "html.parser")
@@ -91,30 +82,24 @@ def mark_attendance(subject):
             else:
                 logging.append(("ERROR",str(datetime.datetime.now()),username,subject,"Present or Late not found"))
 
+    IS_LOGGING_DONE = False
     try:
         #result | timestamp | ID  | subject | msg
-        cnx = mysql.connector.connect(user='RtYeNviJ13', password='GEIeh9z3Wx',
-                                    host='remotemysql.com',
-                                    port=3306,
-                                    database='RtYeNviJ13')
-        add_log_query = ("INSERT INTO lmslog(result, timestamp, sid, subject, msg) VALUES (%s, %s, %s, %s, %s)")
+        cnx = connection.get_connector() 
+        insert_log_query = connection.INSERT_LOG_QUERY
         cursor = cnx.cursor()
         for log in logging:
-            cursor.execute(add_log_query, log)
+            cursor.execute(insert_log_query, log)
         cnx.commit()
         cursor.close()
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
-        else:
-            print(err)
-    finally:
-        
         cnx.close()
+        IS_LOGGING_DONE = True
+    except Exception as e:
+        print(e)
 
     if(IS_SUCCESS):
         return f"OK - {COUNT}"
+    elif(not IS_LOGGING_DONE):
+        return f"LOG ERR-OK:{COUNT}"
     else:
         return "NOT"
