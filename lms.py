@@ -86,7 +86,7 @@ def mark_attendance(subject):
     try:
         #result | timestamp | ID  | subject | msg
         cnx = connection.get_connector() 
-        insert_log_query = connection.INSERT_LOG_QUERY
+        insert_log_query = connection.get_insert_log_query()
         cursor = cnx.cursor()
         for log in logging:
             cursor.execute(insert_log_query, log)
