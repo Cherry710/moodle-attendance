@@ -7,7 +7,7 @@ subject_links = {
     "MC"    :   "http://lms.rgukt.ac.in/mod/attendance/view.php?id=741",
     "BC"    :   "http://lms.rgukt.ac.in/mod/attendance/view.php?id=987",
     "IS"    :   "http://lms.rgukt.ac.in/mod/attendance/view.php?id=939",
-    "QC"    :   "http://lms.rgukt.ac.in/mod/attendance/view.php?id=2938",
+    "QC"    :   "http://lms.rgukt.ac.in/mod/attendance/view.php?id=4524",
     "MEFA"  :   "http://lms.rgukt.ac.in/mod/attendance/view.php?id=2307",
 }
 
