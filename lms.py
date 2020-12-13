@@ -22,7 +22,7 @@ def mark_attendance(subject):
     try:
         #result | timestamp | ID  | subject | msg
         cnx = connection.get_connector() 
-        insert_log_query = connection.INSERT_LOG_QUERY
+        insert_log_query = connection.get_insert_log_query()
         cursor = cnx.cursor()
         headers = {
         'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
