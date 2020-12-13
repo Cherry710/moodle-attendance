@@ -66,7 +66,7 @@ def mark_async(subject, attempt=1):
         return mark_attendance(subject)
     except Exception as e:
         time.sleep(5)
-        mark_async(subject, attempt+=1)
+        mark_async(subject, attempt+1)
 
 @app.route('/view/')
 @auth.login_required
