@@ -24,9 +24,12 @@ def mark_attendance(subject):
         cnx = connection.get_connector() 
         insert_log_query = connection.INSERT_LOG_QUERY
         cursor = cnx.cursor()
+        headers = {
+        'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
+        }
         for _,username,password in connection.get_users():
             with Session() as s:
-
+                s.headers.update(headers)
                 login_page_content = bs(s.get(LOGIN_PAGE).content, "html.parser")
                 logintoken = login_page_content.find("input", {"name":"logintoken"})["value"]
                 login_data = {"username":username,"password":password, "logintoken":logintoken}
