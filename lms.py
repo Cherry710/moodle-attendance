@@ -37,6 +37,7 @@ def mark_attendance(subject):
                 res = s.post(LOGIN_PAGE,login_data)
                 if(res.status_code!=200):
                     log = ("ERROR",str(datetime.datetime.now()),username,subject,f"returned code:{res.status_code}")
+                    cursor.execute(insert_log_query, log)
                     continue
 
                 attendace_page = s.get(subject_links[subject])
@@ -44,6 +45,7 @@ def mark_attendance(subject):
                 x = att_content.select('a[href*="sessid="]')
                 if(len(x)==0):
                     log = ("ERROR",str(datetime.datetime.now()),username,subject, "'Submit Attendance' not found")
+                    cursor.execute(insert_log_query, log)
                     continue
 
                 att_link = x[0]['href']
