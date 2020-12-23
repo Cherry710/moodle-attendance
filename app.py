@@ -56,17 +56,12 @@ def mark(subject):
     task = mark_async.delay(subject)
     return task.get()
 
-
-MAX_TRY = 3
 @celery.task(name="process_mark_attendance")
-def mark_async(subject, attempt=1):
-    if(attempt>MAX_TRY):
-        return "Max Attempts Exceeded"
+def mark_async(subject):
     try:
         return mark_attendance(subject)
     except Exception as e:
-        time.sleep(5)
-        mark_async(subject, attempt+1)
+        print(e)
 
 @app.route('/view/')
 @auth.login_required
