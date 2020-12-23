@@ -9,4 +9,3 @@ celery
 redis
 prettytable
 eventlet
-dnspython
