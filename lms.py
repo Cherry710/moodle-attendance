@@ -109,6 +109,7 @@ def mark_user(username, password, subject):
 
 
 def get_subject_link_component(sess, subject):
+    HTML_PARSER = "html.parser"
     attendace_page = sess.get(subject_links[subject])
     att_content = bs(attendace_page.content, HTML_PARSER)
     link_component = att_content.select('a[href*="sessid="]')
@@ -146,7 +147,7 @@ def mark_attendance(subject):
     except Exception as e:
         print(e)
 
-    if(IS_SUCCESS):
+    if(COUNT > 0):
         return f"OK - {COUNT}"
     elif(not IS_LOGGING_DONE):
         return f"LOG ERR-OK:{COUNT}"
