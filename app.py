@@ -57,8 +57,11 @@ def home():
 
 @app.route('/subject/<subject>')
 def mark(subject):
+    queue = []
     for _, username, password in connection.get_users():
-        mark_async.delay(username, password, subject).get()
+        queue.append(mark_async.delay(username, password, subject))
+    for q in queue:
+        q.get()
     return f"Request Received for {subject}"
 
 
