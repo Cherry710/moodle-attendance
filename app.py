@@ -68,7 +68,6 @@ def mark(subject):
 @celery.task(name="process_mark_attendance")
 def mark_async(username, password, subject):
     try:
-        time.sleep(35)
         return mark_attendance(username, password, subject)
     except Exception as e:
         print("APP_ERROR:"+str(e))
