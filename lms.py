@@ -127,6 +127,7 @@ def get_login_data(sess, username, password):
 
 
 def mark_attendance(username, password, subject):
+    IS_SUCCESS = False
     try:
         IS_SUCCESS = mark_and_log(username, password, subject)
     except Exception as e:
