@@ -14,8 +14,8 @@ subject_links = {
 }
 
 
-def getlocaltime(): return str(datetime.datetime.now(
-    datetime.timezone(datetime.timedelta(hours=5, minutes=30))))
+def getlocaltime(): return datetime.datetime.now(
+    datetime.timezone(datetime.timedelta(hours=5, minutes=30))).strftime("%c")
 
 
 def submit_attendance(link_component, sess):
