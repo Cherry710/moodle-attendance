@@ -13,9 +13,9 @@ subject_links = {
 
 LOGIN_PAGE = "http://lms.rgukt.ac.in/login/index.php"
 
+getlocaltime = lambda :str(datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5,minutes=30))))
 
 def mark_attendance(subject): 
-    logging = []
     IS_SUCCESS = False
     IS_LOGGING_DONE = False
     COUNT = 0
@@ -36,7 +36,7 @@ def mark_attendance(subject):
 
                 res = s.post(LOGIN_PAGE,login_data)
                 if(res.status_code!=200):
-                    log = ("ERROR",str(datetime.datetime.now()),username,subject,f"returned code:{res.status_code}")
+                    log = ("ERROR",getlocaltime(),username,subject,f"returned code:{res.status_code}")
                     cursor.execute(insert_log_query, log)
                     continue
 
@@ -44,7 +44,7 @@ def mark_attendance(subject):
                 att_content = bs(attendace_page.content, "html.parser")
                 x = att_content.select('a[href*="sessid="]')
                 if(len(x)==0):
-                    log = ("ERROR",str(datetime.datetime.now()),username,subject, "'Submit Attendance' not found")
+                    log = ("ERROR",getlocaltime(),username,subject, "'Submit Attendance' not found")
                     cursor.execute(insert_log_query, log)
                     continue
 
@@ -84,17 +84,17 @@ def mark_attendance(subject):
                     }
                     final_resp = s.post("http://lms.rgukt.ac.in/mod/attendance/attendance.php",post_data)
                     if(final_resp.status_code==200):
-                        log = ("SUCCESS",str(datetime.datetime.now()),username,subject,f"marked as {button_text}")
+                        log = ("SUCCESS",getlocaltime(),username,subject,f"marked as {button_text}")
                         IS_SUCCESS = True
                         COUNT+=1
                     else:
-                        log = ("ERROR",str(datetime.datetime.now()),username,subject,f"returned code:{res.status_code}")
+                        log = ("ERROR",getlocaltime(),username,subject,f"returned code:{res.status_code}")
                 else:
-                    log = ("ERROR",str(datetime.datetime.now()),username,subject,"Present or Late not found")
+                    log = ("ERROR",getlocaltime(),username,subject,"Present or Late not found")
 
                 cursor.execute(insert_log_query, log)
-        
-        cnx.commit()
+                cnx.commit()
+
         cursor.close()
         cnx.close()
         IS_LOGGING_DONE = True
