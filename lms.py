@@ -126,30 +126,28 @@ def get_login_data(sess, username, password):
     return login_data
 
 
-def mark_attendance(subject):
-    IS_LOGGING_DONE = False
-    COUNT = 0
+def mark_attendance(username, password, subject):
     try:
-        # result | timestamp | ID  | subject | msg
-        cnx = connection.get_connector()
-        insert_log_query = connection.get_insert_log_query()
-        cursor = cnx.cursor()
-
-        for _, username, password in connection.get_users():
-            IS_SUCCESS, log = mark_user(username, password, subject)
-            COUNT += int(IS_SUCCESS)
-            cursor.execute(insert_log_query, log)
-            cnx.commit()
-
-        cursor.close()
-        cnx.close()
-        IS_LOGGING_DONE = True
+        IS_SUCCESS = mark_and_log(username, password, subject)
     except Exception as e:
-        print(e)
+        print(f"EXCEPTION - {str(e)}")
 
-    if(COUNT > 0):
-        return f"OK - {COUNT}"
-    elif(not IS_LOGGING_DONE):
-        return f"LOG ERR-OK:{COUNT}"
+    if(IS_SUCCESS):
+        return f"OK - {username}"
     else:
-        return "NOT"
+        return f"NOT - {username}"
+
+
+def mark_and_log(username, password, subject):
+    # result | timestamp | ID  | subject | msg
+    cnx = connection.get_connector()
+    insert_log_query = connection.get_insert_log_query()
+    cursor = cnx.cursor()
+
+    IS_SUCCESS, log = mark_user(username, password, subject)
+    cursor.execute(insert_log_query, log)
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
+    return IS_SUCCESS
