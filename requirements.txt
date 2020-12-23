@@ -8,3 +8,5 @@ mysql-connector-python
 celery
 redis
 prettytable
+eventlet
+dnspython
