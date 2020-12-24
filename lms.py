@@ -128,8 +128,8 @@ def get_login_data(sess, username, password):
 
 
 def mark_attendance(subject):
+    COUNT = 0
     for _, username, password in connection.get_users():
-        COUNT = 0
         try:
             COUNT += int(mark_and_log(username, password, subject))
         except Exception as e:
