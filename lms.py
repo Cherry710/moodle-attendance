@@ -5,6 +5,7 @@ import connection
 
 LOGIN_PAGE = "http://lms.rgukt.ac.in/login/index.php"
 BASE_LINK = "http://lms.rgukt.ac.in/mod/attendance/view.php?id="
+HTML_PARSER = "html.parser"
 subject_links = {
     "MC":   BASE_LINK + "741",
     "BC":   BASE_LINK + "987",
@@ -44,6 +45,7 @@ def submit_attendance(link_component, sess):
 
 
 def get_spans_and_att_dict(link_component, sess):
+
     att_link = link_component[0]['href']
     form_site = sess.get(att_link)
     form_bs = bs(form_site.content, HTML_PARSER)
@@ -109,7 +111,7 @@ def mark_user(username, password, subject):
 
 
 def get_subject_link_component(sess, subject):
-    HTML_PARSER = "html.parser"
+
     attendace_page = sess.get(subject_links[subject])
     att_content = bs(attendace_page.content, HTML_PARSER)
     link_component = att_content.select('a[href*="sessid="]')
@@ -117,7 +119,6 @@ def get_subject_link_component(sess, subject):
 
 
 def get_login_data(sess, username, password):
-    HTML_PARSER = "html.parser"
     login_page_content = bs(sess.get(LOGIN_PAGE).content, HTML_PARSER)
     logintoken = login_page_content.find(
         "input", {"name": "logintoken"})["value"]
