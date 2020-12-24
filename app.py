@@ -57,18 +57,13 @@ def home():
 
 @app.route('/subject/<subject>')
 def mark(subject):
-    queue = []
-    for _, username, password in connection.get_users():
-        queue.append(mark_async.delay(username, password, subject))
-    for q in queue:
-        q.get()
-    return f"Request Received for {subject}"
+    return mark_async.delay(subject).get()
 
 
 @celery.task(name="process_mark_attendance")
-def mark_async(username, password, subject):
+def mark_async(subject):
     try:
-        return mark_attendance(username, password, subject)
+        return mark_attendance(subject)
     except Exception as e:
         print("APP_ERROR:"+str(e))
 

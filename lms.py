@@ -127,17 +127,18 @@ def get_login_data(sess, username, password):
     return login_data
 
 
-def mark_attendance(username, password, subject):
-    IS_SUCCESS = False
-    try:
-        IS_SUCCESS = mark_and_log(username, password, subject)
-    except Exception as e:
-        print(f"EXCEPTION - {str(e)}")
+def mark_attendance(subject):
+    for _, username, password in connection.get_users():
+        COUNT = 0
+        try:
+            COUNT += int(mark_and_log(username, password, subject))
+        except Exception as e:
+            print(f"EXCEPTION - {str(e)}")
 
-    if(IS_SUCCESS):
-        return f"OK - {username}"
-    else:
-        return f"NOT - {username}"
+        if(COUNT > 0):
+            return f"OK - {COUNT}"
+        else:
+            return f"NOT SUCCESSFUL"
 
 
 def mark_and_log(username, password, subject):
