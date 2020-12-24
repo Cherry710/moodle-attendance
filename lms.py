@@ -133,12 +133,12 @@ def mark_attendance(subject):
         try:
             COUNT += int(mark_and_log(username, password, subject))
         except Exception as e:
-            print(f"EXCEPTION - {str(e)}")
+            print(f"EXCEPTION {username} - {str(e)}")
 
-        if(COUNT > 0):
-            return f"OK - {COUNT}"
-        else:
-            return f"NOT SUCCESSFUL"
+    if(COUNT > 0):
+        return f"OK - {COUNT}"
+    else:
+        return f"NOT SUCCESSFUL"
 
 
 def mark_and_log(username, password, subject):
