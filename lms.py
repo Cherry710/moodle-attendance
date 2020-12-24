@@ -19,7 +19,7 @@ def getlocaltime(): return datetime.datetime.now(
     datetime.timezone(datetime.timedelta(hours=5, minutes=30))).strftime("%c")
 
 
-def submit_attendance(link_component, sess):
+def submit_attendance(username, subject, link_component, sess):
     IS_SUCCESS = False
 
     spans, att_dict = get_spans_and_att_dict(link_component, sess)
@@ -107,7 +107,7 @@ def mark_user(username, password, subject):
         if(len(link_component) == 0):
             return False, ("ERROR", getlocaltime(), username, subject, "'Submit Attendance' not found")
 
-        return submit_attendance(link_component, sess)
+        return submit_attendance(username, subject, link_component, sess)
 
 
 def get_subject_link_component(sess, subject):
