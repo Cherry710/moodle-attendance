@@ -6,6 +6,7 @@ import connection
 LOGIN_PAGE = "http://lms.rgukt.ac.in/login/index.php"
 BASE_LINK = "http://lms.rgukt.ac.in/mod/attendance/view.php?id="
 HTML_PARSER = "html.parser"
+MAX_ATTEMPTS = 3
 subject_links = {
     "MC":   BASE_LINK + "741",
     "BC":   BASE_LINK + "987",
@@ -130,10 +131,13 @@ def get_login_data(sess, username, password):
 def mark_attendance(subject):
     COUNT = 0
     for _, username, password in connection.get_users():
-        try:
-            COUNT += int(mark_and_log(username, password, subject))
-        except Exception as e:
-            print(f"EXCEPTION {username} - {str(e)}")
+        for ATTEMPT in range(MAX_ATTEMPTS):
+            try:
+                COUNT += int(mark_and_log(username, password, subject))
+                break
+            except Exception as e:
+                print(
+                    f"EXCEPTION [{ATTEMPT}/{MAX_ATTEMPTS}] {username} - {str(e)}")
 
     if(COUNT > 0):
         return f"OK - {COUNT}"
