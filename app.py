@@ -63,7 +63,8 @@ def mark(subject):
 @celery.task(name="process_mark_attendance")
 def mark_async(subject):
     try:
-        return mark_attendance(subject)
+        hostid = os.environ.get('HOSTID', '1')
+        return mark_attendance(subject, hostid)
     except Exception as e:
         print("APP_ERROR:"+str(e))
 

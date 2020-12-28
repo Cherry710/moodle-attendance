@@ -1,11 +1,15 @@
 import mysql.connector
 from mysql.connector import errorcode
 import os
+
+
 def get_insert_log_query():
-    INSERT_LOG_QUERY = ("INSERT INTO lmslog(result, timestamp, sid, subject, msg) VALUES (%s, %s, %s, %s, %s)")
+    INSERT_LOG_QUERY = (
+        "INSERT INTO lmslog(result, timestamp, sid, subject, msg) VALUES (%s, %s, %s, %s, %s)")
     return INSERT_LOG_QUERY
 
-def get_view_log_query(limit=0,wkey=None,wvalue=None):
+
+def get_view_log_query(limit=0, wkey=None, wvalue=None):
     query_string = "SELECT * FROM lmslog"
     query_string += f" WHERE {wkey}='{wvalue}'" if (wkey and wvalue) else ""
     query_string += " ORDER BY id DESC"
@@ -13,10 +17,11 @@ def get_view_log_query(limit=0,wkey=None,wvalue=None):
     VIEW_LOG_QUERY = (query_string)
     return VIEW_LOG_QUERY
 
-def get_users():
+
+def get_users(hostid):
     try:
         cnx = get_connector()
-        GET_USERS_QUERY = ("SELECT * FROM users")
+        GET_USERS_QUERY = (f"SELECT * FROM users WHERE hostid={hostid}")
         cursor = cnx.cursor()
         cursor.execute(GET_USERS_QUERY)
         res = [row for row in cursor]
@@ -28,14 +33,16 @@ def get_users():
         print(e)
         return []
 
-def insert_user(sid,password):
+
+def insert_user(sid, password):
     if(not(sid and password)):
         return False
     try:
         cnx = get_connector()
-        INSERT_USER_QUERY = ("INSERT INTO users( sid,  password) VALUES (%s, %s)")
+        INSERT_USER_QUERY = (
+            "INSERT INTO users( sid,  password) VALUES (%s, %s)")
         cursor = cnx.cursor()
-        cursor.execute(INSERT_USER_QUERY,(sid,password))
+        cursor.execute(INSERT_USER_QUERY, (sid, password))
         cnx.commit()
         cursor.close()
         cnx.close()
@@ -43,6 +50,7 @@ def insert_user(sid,password):
     except Exception as e:
         print(e)
         return False
+
 
 def delete_user(sid):
     if(not sid):
@@ -63,11 +71,12 @@ def delete_user(sid):
 
 def get_connector():
     try:
-        cnx = mysql.connector.connect(user=os.environ.get('DB_USER','root'), 
-                                        password=os.environ.get('DB_PASS',''),
-                                        host=os.environ.get('DB_HOST','localhost'),
-                                        port=3306,
-                                        database=os.environ.get('DB_DB','lms-attendace'))
+        cnx = mysql.connector.connect(user=os.environ.get('DB_USER', 'root'),
+                                      password=os.environ.get('DB_PASS', ''),
+                                      host=os.environ.get(
+                                          'DB_HOST', 'localhost'),
+                                      port=3306,
+                                      database=os.environ.get('DB_DB', 'lms-attendace'))
         return cnx
     except mysql.connector.Error as err:
         print(str(err))

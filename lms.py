@@ -128,9 +128,10 @@ def get_login_data(sess, username, password):
     return login_data
 
 
-def mark_attendance(subject):
+def mark_attendance(subject, hostid=1):
     COUNT = 0
-    for _, username, password in connection.get_users():
+    userinfos = connection.get_users(hostid)
+    for _, username, password, _ in userinfos:
         for ATTEMPT in range(MAX_ATTEMPTS):
             try:
                 COUNT += int(mark_and_log(username, password, subject))
@@ -140,7 +141,7 @@ def mark_attendance(subject):
                     f"EXCEPTION [{ATTEMPT}/{MAX_ATTEMPTS}] {username} - {str(e)}")
 
     if(COUNT > 0):
-        return f"OK - {COUNT}"
+        return f"OK - {COUNT}/{len(userinfos)}"
     else:
         return f"NOT SUCCESSFUL"
 
